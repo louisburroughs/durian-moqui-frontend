@@ -18,7 +18,7 @@ buildscript {
         maven{ url "https://artifactory.michelin.com/maven-public" }
         maven { url "https://repo1.maven.org/maven2" }
         //mavenCentral()
-        // maven { url "https://plugins.gradle.org/m2/" }
+        maven { url "https://plugins.gradle.org/m2/" }
     }
     dependencies { classpath 'org.ajoberstar.grgit:grgit-gradle:5.0.0' }
 }
@@ -28,6 +28,25 @@ buildscript {
 allprojects { tasks.withType(JavaForkOptions) { jvmArgs '-Djava.awt.headless=true' } }
 
 import org.ajoberstar.grgit.*
+import javax.net.ssl.HttpsURLConnection
+import javax.net.ssl.SSLContext
+import javax.net.ssl.TrustManager
+import javax.net.ssl.X509TrustManager
+import java.security.cert.X509Certificate
+
+// Configure SSL to trust all certificates for HTTPS connections (including GitHub)
+def trustAllCerts = [
+    new X509TrustManager() {
+        X509Certificate[] getAcceptedIssuers() { null }
+        void checkClientTrusted(X509Certificate[] certs, String authType) {}
+        void checkServerTrusted(X509Certificate[] certs, String authType) {}
+    }
+] as TrustManager[]
+
+SSLContext sc = SSLContext.getInstance('TLS')
+sc.init(null, trustAllCerts, new java.security.SecureRandom())
+HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory())
+HttpsURLConnection.setDefaultHostnameVerifier { hostname, session -> true }
 
 defaultTasks 'build'
 

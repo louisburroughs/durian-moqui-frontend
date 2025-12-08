@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<addons>
+    <!-- Custom or overridden component definitions -->
+    
+    <!-- durion-theme component -->
+    <component name="durion-theme" group="louisburroughs" version="" branch="main"/>
+</addons>
