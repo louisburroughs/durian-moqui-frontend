@@ -11,22 +11,27 @@ The moqui_example agent structure is designed to support the development of a mu
 The moqui_example agent architecture is organized into six specialized layers:
 
 ### 1. Foundation Layer
+
 - **Moqui Framework Agent**: Core Moqui development patterns and best practices
 - **Architecture Agent**: Domain boundaries, component design, and system architecture
 
 ### 2. Implementation Layer  
+
 - **Domain Agent**: Business domain expertise across the five DETSMS domains
 - **Experience Layer Agent**: Cross-domain orchestration and API coordination
 
 ### 3. Infrastructure Layer
+
 - **Security Agent**: Moqui security patterns, JWT integration, and data protection
 - **DevOps Agent**: Deployment, configuration, and environment management
 
 ### 4. Quality Assurance Layer
+
 - **Testing Agent**: Comprehensive testing strategies for Moqui components
 - **Performance Agent**: Optimization and monitoring for Moqui applications
 
 ### 5. Specialized Layer
+
 - **Documentation Agent**: Technical documentation and API specifications
 
 ## Components and Interfaces
@@ -61,6 +66,7 @@ MoquiAgentHierarchy:
 **Purpose**: Provides core Moqui Framework development expertise and best practices
 
 **Capabilities**:
+
 - Guides implementation of Moqui entities, services, screens, and transitions
 - Ensures proper use of Moqui screen widgets, forms, and UI patterns
 - Enforces Moqui naming conventions and component structure
@@ -69,6 +75,7 @@ MoquiAgentHierarchy:
 - Guides developers to use positivity APIs for business data persistence
 
 **Integration Points**:
+
 - Coordinates with Architecture Agent for component design decisions
 - Works with Domain Agent for business logic implementation
 - Collaborates with Security Agent for Moqui security patterns
@@ -77,6 +84,7 @@ MoquiAgentHierarchy:
 **Purpose**: Maintains architectural consistency and domain boundaries across DETSMS components
 
 **Capabilities**:
+
 - Defines and enforces domain boundaries for the five DETSMS business domains
 - Ensures proper component placement and dependency management
 - Guides integration patterns through durion-positivity experience APIs
@@ -85,6 +93,7 @@ MoquiAgentHierarchy:
 - Creates specifications for missing positivity APIs when required
 
 **Integration Points**:
+
 - Provides architectural guidance to all other agents
 - Coordinates with workspace-level Workspace Architecture Agent
 - Works with Experience Layer Agent for cross-domain coordination
@@ -93,6 +102,7 @@ MoquiAgentHierarchy:
 **Purpose**: Provides specialized expertise for the five DETSMS business domains
 
 **Capabilities**:
+
 - **Work Execution Domain**: Estimate-to-payment workflows and business process management
 - **Inventory Control**: Inventory tracking, reservation, and consumption patterns
 - **Product & Pricing**: Catalog management and dynamic pricing calculations
@@ -102,6 +112,7 @@ MoquiAgentHierarchy:
 - Guides integration with positivity backend APIs for each domain
 
 **Integration Points**:
+
 - Works with Architecture Agent for domain boundary enforcement
 - Coordinates with Experience Layer Agent for cross-domain workflows
 - Collaborates with Security Agent for domain-specific security requirements
@@ -110,6 +121,7 @@ MoquiAgentHierarchy:
 **Purpose**: Specializes in orchestration services and cross-domain coordination
 
 **Capabilities**:
+
 - Designs task-oriented APIs for UI/Mobile/MCP integration
 - Coordinates cross-domain workflow implementation
 - Ensures proper mobile-optimized data transfer and offline synchronization
@@ -118,6 +130,7 @@ MoquiAgentHierarchy:
 - Enforces durion-positivity experience API patterns
 
 **Integration Points**:
+
 - Coordinates with Domain Agent for cross-domain workflows
 - Works with Architecture Agent for integration pattern enforcement
 - Collaborates with workspace-level API Contract Agent
@@ -126,6 +139,7 @@ MoquiAgentHierarchy:
 **Purpose**: Ensures comprehensive security across all DETSMS domains and integration points
 
 **Capabilities**:
+
 - Implements Moqui security patterns and JWT integration
 - Ensures proper entity-level security constraints and field-level access control
 - Provides guidance for service-level authorization and input validation
@@ -134,6 +148,7 @@ MoquiAgentHierarchy:
 - Coordinates with positivity backend security patterns
 
 **Integration Points**:
+
 - Works with all agents for security requirement enforcement
 - Coordinates with workspace-level Unified Security Agent
 - Collaborates with DevOps Agent for secure deployment practices
@@ -142,6 +157,7 @@ MoquiAgentHierarchy:
 **Purpose**: Manages Moqui application deployment, configuration, and monitoring
 
 **Capabilities**:
+
 - Implements Moqui deployment patterns and configuration management
 - Ensures proper environment-specific configuration and data management
 - Provides guidance for Moqui-specific monitoring and performance tracking
@@ -150,6 +166,7 @@ MoquiAgentHierarchy:
 - Coordinates deployment with positivity backend systems
 
 **Integration Points**:
+
 - Coordinates with workspace-level Full-Stack DevOps Agent
 - Works with Performance Agent for monitoring and optimization
 - Collaborates with Security Agent for secure deployment
@@ -158,6 +175,7 @@ MoquiAgentHierarchy:
 **Purpose**: Implements comprehensive testing strategies for Moqui components and workflows
 
 **Capabilities**:
+
 - Specializes in Moqui entity testing and data validation
 - Ensures proper service testing with Moqui test framework and mock data
 - Provides guidance for UI testing and user interaction validation
@@ -166,6 +184,7 @@ MoquiAgentHierarchy:
 - Coordinates testing with positivity backend integration points
 
 **Integration Points**:
+
 - Works with all agents for comprehensive test coverage
 - Coordinates with workspace-level End-to-End Testing Agent
 - Collaborates with Performance Agent for performance testing
@@ -174,6 +193,7 @@ MoquiAgentHierarchy:
 **Purpose**: Optimizes DETSMS performance across all domains and integration points
 
 **Capabilities**:
+
 - Specializes in Moqui entity performance and database optimization
 - Ensures efficient service implementation and caching strategies
 - Provides guidance for UI performance and responsive design
@@ -182,6 +202,7 @@ MoquiAgentHierarchy:
 - Coordinates performance optimization with positivity backend
 
 **Integration Points**:
+
 - Works with all agents for performance considerations
 - Coordinates with workspace-level Workspace SRE Agent
 - Collaborates with DevOps Agent for monitoring implementation
@@ -190,6 +211,7 @@ MoquiAgentHierarchy:
 **Purpose**: Maintains comprehensive documentation for all DETSMS components and APIs
 
 **Capabilities**:
+
 - Specializes in Moqui entity documentation and data model diagrams
 - Ensures comprehensive service documentation with parameter descriptions and examples
 - Provides guidance for UI documentation and user workflow guides
@@ -198,6 +220,7 @@ MoquiAgentHierarchy:
 - Documents integration patterns with positivity backend APIs
 
 **Integration Points**:
+
 - Works with all agents for documentation requirements
 - Coordinates with workspace-level agents for cross-project documentation
 - Collaborates with Experience Layer Agent for API documentation
@@ -326,6 +349,7 @@ Based on the prework analysis, the following correctness properties have been id
 ### Property Reflection
 
 After reviewing all properties identified in the prework, several areas of redundancy were identified:
+
 - Properties about "having specialized agents" (examples) can be consolidated into agent registry validation
 - Properties about "agent behavior for all X scenarios" can be combined where they cover similar guidance patterns
 - Properties about "consistent guidance provision" can be unified under comprehensive guidance validation
@@ -367,16 +391,19 @@ After reviewing all properties identified in the prework, several areas of redun
 ## Error Handling
 
 ### Framework Integration Failures
+
 - **Positivity API Unavailability**: When positivity backend APIs are unavailable, agents should provide graceful degradation strategies and local caching guidance
 - **Component Dependency Conflicts**: When Moqui component dependencies conflict, agents should provide resolution strategies and alternative approaches
 - **Framework Version Mismatches**: When Moqui framework versions are incompatible, agents should provide migration guidance and compatibility strategies
 
 ### Domain Boundary Violations
+
 - **Cross-Domain Data Access**: When components attempt to access data outside their domain, agents should redirect to proper positivity API usage
 - **Business Logic Placement**: When business logic is implemented in Moqui instead of positivity, agents should provide refactoring guidance
 - **Integration Pattern Violations**: When improper integration patterns are used, agents should provide durion-positivity pattern guidance
 
 ### Development Process Failures
+
 - **Security Requirement Violations**: When security requirements are not met, agents should provide specific remediation steps and pattern guidance
 - **Performance Degradation**: When performance issues arise, agents should provide optimization strategies and monitoring guidance
 - **Testing Coverage Gaps**: When testing coverage is insufficient, agents should provide comprehensive testing strategies and framework guidance
@@ -388,12 +415,14 @@ After reviewing all properties identified in the prework, several areas of redun
 The moqui_example agent structure will be validated using both unit testing and property-based testing approaches:
 
 **Unit Testing**:
+
 - Specific Moqui development scenarios with known expected agent responses
 - Domain-specific guidance validation for each of the five DETSMS domains
 - Integration pattern enforcement for durion-positivity usage
 - Security pattern validation for Moqui security and JWT integration
 
 **Property-Based Testing**:
+
 - Universal properties that should hold across all Moqui development scenarios
 - Consistency validation across different domain implementations
 - Integration pattern enforcement across random development scenarios
@@ -408,18 +437,21 @@ Each property-based test will be tagged with comments explicitly referencing the
 ### Moqui-Specific Testing Strategy
 
 **Framework Integration Testing**:
+
 - Test agent guidance for Moqui entity, service, and screen development
 - Validate positivity API integration guidance across different scenarios
 - Test component dependency enforcement and framework integration patterns
 - Verify security pattern guidance for Moqui security and JWT integration
 
 **Domain Expertise Testing**:
+
 - Validate domain-specific guidance for each of the five DETSMS business domains
 - Test cross-domain coordination and workflow guidance
 - Verify experience layer orchestration and API coordination guidance
 - Test mobile optimization and MCP integration guidance
 
 **Quality Assurance Testing**:
+
 - Test comprehensive testing strategy guidance for Moqui components
 - Validate performance optimization guidance for Moqui applications
 - Test documentation guidance for entities, services, screens, and APIs
@@ -428,18 +460,21 @@ Each property-based test will be tagged with comments explicitly referencing the
 ### Validation Criteria
 
 **Framework Compliance**:
+
 - All agents provide guidance consistent with Moqui Framework best practices
 - Positivity API integration is properly enforced across all business logic scenarios
 - Component dependencies and framework integration patterns are correctly maintained
 - Security patterns are consistently applied across all development scenarios
 
 **Domain Expertise**:
+
 - Each business domain receives appropriate specialized guidance
 - Cross-domain coordination follows established patterns and boundaries
 - Experience layer orchestration properly coordinates multiple domains
 - Integration with positivity backend follows durion-positivity patterns
 
 **Quality Standards**:
+
 - Testing strategies cover all aspects of Moqui component development
 - Performance optimization considers both Moqui-specific and integration concerns
 - Documentation remains synchronized with component evolution and API changes
