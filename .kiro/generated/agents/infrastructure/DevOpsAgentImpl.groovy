@@ -1,75 +1,317 @@
 package agents.infrastructure
 
 import agents.interfaces.Agent
-import agents.models.AgentRequest
-import agents.models.AgentResponse
-import agents.models.MoquiContext
+import agents.interfaces.AgentRequest
+import agents.interfaces.AgentResponse
 import groovy.transform.CompileStatic
-import groovy.util.logging.Slf4j
 
 /**
  * DevOps Agent Implementation
  * 
- * Provides deployment, containerization, monitoring, scaling, and troubleshooting guidance
- * for Moqui Framework applications with focus on Docker, PostgreSQL, and production operations.
- * 
- * Requirements: REQ-006 (all 5 acceptance criteria), REQ-010 (Reliability)
- * Performance Targets: 2-5 second response time, 90-100% accuracy
- * Test Cases: TC-016, TC-017, TC-018, TC-028, TC-029, TC-030
+ * Requirements: REQ-006 (DevOps and Deployment Support)
+ * - AC1: Deployment guidance (3 seconds, 95% accuracy)
+ * - AC2: Container guidance (4 seconds, 97% accuracy)
+ * - AC3: Monitoring guidance (2 seconds, 98% accuracy)
+ * - AC4: Scaling guidance (5 seconds, 100% accuracy)
+ * - AC5: Troubleshooting guidance (4 seconds, 90% accuracy)
  */
 @CompileStatic
-@Slf4j
 class DevOpsAgentImpl implements Agent {
     
     private static final String AGENT_ID = "devops-agent"
     private static final String AGENT_NAME = "DevOps Agent"
-    private static final List<String> CAPABILITIES = [
-        "deployment-guidance", "container-guidance", "monitoring-guidance", 
-        "scaling-guidance", "troubleshooting-guidance", "moqui-operations"
-    ]
     
-    // Deployment configuration patterns
-    private static final Map<String, String> DEPLOYMENT_PATTERNS = [
-        "moqui-production": """
-# Production Moqui Configuration
-moqui:
-  database:
-    default:
-      database-conf-name: postgres
-      jdbc-uri: jdbc:postgresql://\${DB_HOST}:\${DB_PORT}/\${DB_NAME}
-      jdbc-username: \${DB_USER}
-      jdbc-password: \${DB_PASSWORD}
-      pool-minsize: 5
-      pool-maxsize: 50
-  cache:
-    redis:
-      host: \${REDIS_HOST}
-      port: \${REDIS_PORT}
-  security:
-    jwt-secret: \${JWT_SECRET}
-    session-timeout: 3600
-""",
-        "docker-compose-production": """
+    @Override
+    String getAgentId() { return AGENT_ID }
+    
+    @Override
+    String getAgentName() { return AGENT_NAME }
+    
+    @Override
+    List<String> getCapabilities() {
+        return [
+            "deployment-configuration",
+            "environment-configuration",
+            "clustering-loadbalancing",
+            "container-orchestration",
+            "monitoring-setup",
+            "performance-tracking",
+            "troubleshooting",
+            "scaling-guidance"
+        ]
+    }
+    
+    @Override
+    AgentResponse processRequest(AgentRequest request) {
+        long startTime = System.currentTimeMillis()
+        
+        try {
+            String guidance = switch (request.requestType) {
+                case "deployment-configuration" -> provideDeploymentGuidance(request)
+                case "environment-configuration" -> provideEnvironmentGuidance(request)
+                case "clustering-loadbalancing" -> provideClusteringGuidance(request)
+                case "container-orchestration" -> provideContainerGuidance(request)
+                case "monitoring-setup" -> provideMonitoringGuidance(request)
+                case "performance-tracking" -> providePerformanceTrackingGuidance(request)
+                case "troubleshooting" -> provideTroubleshootingGuidance(request)
+                case "scaling-guidance" -> provideScalingGuidance(request)
+                default -> "Unknown request type: ${request.requestType}"
+            }
+            
+            long responseTime = System.currentTimeMillis() - startTime
+            
+            return new AgentResponse(
+                agentId: AGENT_ID,
+                requestId: request.requestId,
+                guidance: guidance,
+                responseTimeMs: responseTime,
+                success: true
+            )
+        } catch (Exception e) {
+            return new AgentResponse(
+                agentId: AGENT_ID,
+                requestId: request.requestId,
+                guidance: "Error processing request: ${e.message}",
+                responseTimeMs: System.currentTimeMillis() - startTime,
+                success: false,
+                errorMessage: e.message
+            )
+        }
+    }
+    
+    @Override
+    boolean canHandle(AgentRequest request) {
+        return getCapabilities().contains(request.requestType)
+    }
+    
+    @Override
+    Map<String, Object> getHealth() {
+        return [
+            status: "healthy",
+            agentId: AGENT_ID,
+            capabilities: getCapabilities().size(),
+            timestamp: System.currentTimeMillis()
+        ]
+    }
+    
+    // AC1: Deployment configuration guidance (3 seconds, 95% accuracy)
+    private String provideDeploymentGuidance(AgentRequest request) {
+        String component = request.context?.component ?: "unknown"
+        String environment = request.context?.environment ?: "production"
+        
+        return """
+# Moqui Deployment Configuration for ${component}
+
+## Environment: ${environment}
+
+### 1. Configuration File Structure
+- **Location**: runtime/conf/MoquiProductionConf.xml (or MoquiDevConf.xml)
+- **Override**: Use environment variables or system properties
+
+### 2. Database Configuration
+```xml
+<entity-facade>
+    <datasource group-name="transactional">
+        <inline-jdbc jdbc-uri="jdbc:postgresql://localhost:5432/moqui"
+                     jdbc-username="\${db_user}" jdbc-password="\${db_password}"
+                     pool-minsize="5" pool-maxsize="50"/>
+    </datasource>
+</entity-facade>
+```
+
+### 3. Server Configuration
+```xml
+<webapp-list>
+    <webapp name="webroot" http-port="8080" https-port="8443"
+            https-enabled="true" http-host="0.0.0.0"/>
+</webapp-list>
+```
+
+### 4. Deployment Steps
+1. Build: `./gradlew build -x test`
+2. Package: Create runtime directory with all components
+3. Configure: Set environment-specific MoquiConf.xml
+4. Deploy: Copy runtime to target server
+5. Start: `java -jar moqui.war` or use systemd service
+
+### 5. Environment Variables
+- DB_USER, DB_PASSWORD: Database credentials
+- MOQUI_CONF: Path to configuration file
+- JAVA_OPTS: JVM options (-Xmx, -Xms, etc.)
+
+### 6. Health Check Endpoint
+- URL: /rest/s1/moqui/health
+- Expected: 200 OK with JSON status
+"""
+    }
+    
+    // AC1: Environment-specific configuration patterns
+    private String provideEnvironmentGuidance(AgentRequest request) {
+        String environment = request.context?.environment ?: "production"
+        
+        return """
+# Environment-Specific Configuration: ${environment}
+
+## Configuration Hierarchy
+1. MoquiDefaultConf.xml (framework defaults)
+2. MoquiConf.xml (component-specific)
+3. Moqui${environment.capitalize()}Conf.xml (environment-specific)
+4. Environment variables (highest priority)
+
+## ${environment.capitalize()} Configuration
+
+### Database Settings
+${environment == "production" ? """
+- Connection pool: 50-100 connections
+- Timeout: 30 seconds
+- Validation query: SELECT 1
+- SSL mode: require
+""" : """
+- Connection pool: 5-10 connections
+- Timeout: 10 seconds
+- Validation query: SELECT 1
+- SSL mode: prefer
+"""}
+
+### Logging Configuration
+```xml
+<screen-facade>
+    <screen-text-output type="text/html" 
+                        compress="true" 
+                        cache-pages="${environment == 'production' ? 'true' : 'false'}"/>
+</screen-facade>
+```
+
+### Cache Configuration
+${environment == "production" ? """
+- Entity cache: Enabled (1000 entries per entity)
+- Screen cache: Enabled (500 screens)
+- Service cache: Enabled (200 services)
+""" : """
+- Entity cache: Minimal (100 entries per entity)
+- Screen cache: Disabled
+- Service cache: Disabled
+"""}
+
+### Security Settings
+- HTTPS: ${environment == "production" ? "Required" : "Optional"}
+- Session timeout: ${environment == "production" ? "30 minutes" : "60 minutes"}
+- CORS: ${environment == "production" ? "Restricted" : "Permissive"}
+"""
+    }
+    
+    // AC4: Clustering and load balancing guidance (5 seconds, 100% accuracy)
+    private String provideClusteringGuidance(AgentRequest request) {
+        return """
+# Moqui Clustering and Load Balancing
+
+## 1. Clustering Configuration
+
+### Session Replication
+```xml
+<webapp-list>
+    <webapp name="webroot" session-timeout="30">
+        <session-config>
+            <cookie-config http-only="true" secure="true"/>
+            <tracking-mode>COOKIE</tracking-mode>
+        </session-config>
+    </webapp>
+</webapp-list>
+```
+
+### Distributed Cache (Hazelcast)
+```xml
+<cache-facade>
+    <cache-provider class="org.moqui.impl.cache.HazelcastCacheProvider">
+        <property name="cluster-name" value="moqui-cluster"/>
+        <property name="cluster-password" value="\${cluster_password}"/>
+    </cache-provider>
+</cache-facade>
+```
+
+## 2. Load Balancer Configuration
+
+### Nginx Configuration
+```nginx
+upstream moqui_backend {
+    least_conn;
+    server moqui1:8080 max_fails=3 fail_timeout=30s;
+    server moqui2:8080 max_fails=3 fail_timeout=30s;
+    server moqui3:8080 max_fails=3 fail_timeout=30s;
+}
+
+server {
+    listen 80;
+    server_name example.com;
+    
+    location / {
+        proxy_pass http://moqui_backend;
+        proxy_set_header Host \$host;
+        proxy_set_header X-Real-IP \$remote_addr;
+        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto \$scheme;
+    }
+    
+    # Health check endpoint
+    location /health {
+        proxy_pass http://moqui_backend/rest/s1/moqui/health;
+        access_log off;
+    }
+}
+```
+
+## 3. Database Clustering
+- Use PostgreSQL replication (primary-replica)
+- Configure read replicas for reporting queries
+- Use connection pooling with failover
+
+## 4. File Storage Clustering
+- Use shared NFS or S3-compatible storage
+- Configure runtime/db and runtime/sessions on shared storage
+- Avoid local file storage for user uploads
+
+## 5. Monitoring Cluster Health
+- Monitor each node's /rest/s1/moqui/health endpoint
+- Track session distribution across nodes
+- Monitor cache hit rates and replication lag
+"""
+    }
+    
+    // AC2: Container orchestration guidance (4 seconds, 97% accuracy)
+    private String provideContainerGuidance(AgentRequest request) {
+        return """
+# Moqui Container Orchestration
+
+## 1. Docker Configuration
+
+### Dockerfile
+```dockerfile
+FROM eclipse-temurin:11-jre
+WORKDIR /opt/moqui
+COPY runtime ./runtime
+COPY moqui.war ./
+EXPOSE 8080 8443
+ENV JAVA_OPTS="-Xmx2g -Xms512m"
+CMD ["java", "-jar", "moqui.war"]
+```
+
+### Docker Compose
+```yaml
 version: '3.8'
 services:
   moqui:
-    image: moqui/moqui-framework:latest
-    environment:
-      - DB_HOST=postgres
-      - DB_PORT=5432
-      - DB_NAME=moqui
-      - DB_USER=\${DB_USER}
-      - DB_PASSWORD=\${DB_PASSWORD}
-      - JWT_SECRET=\${JWT_SECRET}
-    depends_on:
-      - postgres
-      - redis
+    image: moqui:latest
     ports:
       - "8080:8080"
+    environment:
+      - DB_USER=\${DB_USER}
+      - DB_PASSWORD=\${DB_PASSWORD}
+      - MOQUI_CONF=conf/MoquiProductionConf.xml
     volumes:
-      - ./runtime:/opt/moqui/runtime
-    restart: unless-stopped
-    
+      - moqui-runtime:/opt/moqui/runtime
+    depends_on:
+      - postgres
+  
   postgres:
     image: postgres:14
     environment:
@@ -77,56 +319,21 @@ services:
       - POSTGRES_USER=\${DB_USER}
       - POSTGRES_PASSWORD=\${DB_PASSWORD}
     volumes:
-      - postgres_data:/var/lib/postgresql/data
-    restart: unless-stopped
-    
-  redis:
-    image: redis:7-alpine
-    restart: unless-stopped
-    
+      - postgres-data:/var/lib/postgresql/data
+
 volumes:
-  postgres_data:
-"""
-    ]
-    
-    // Container optimization patterns
-    private static final Map<String, String> CONTAINER_PATTERNS = [
-        "dockerfile-optimized": """
-FROM openjdk:11-jre-slim
+  moqui-runtime:
+  postgres-data:
+```
 
-# Install dependencies
-RUN apt-get update && apt-get install -y \\
-    curl \\
-    && rm -rf /var/lib/apt/lists/*
+## 2. Kubernetes Deployment
 
-# Create moqui user
-RUN useradd -m -s /bin/bash moqui
-
-# Set working directory
-WORKDIR /opt/moqui
-
-# Copy application
-COPY --chown=moqui:moqui runtime/ ./runtime/
-COPY --chown=moqui:moqui moqui.war ./
-
-# Switch to moqui user
-USER moqui
-
-# Health check
-HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \\
-  CMD curl -f http://localhost:8080/rest/s1/moqui/basic/status || exit 1
-
-# Expose port
-EXPOSE 8080
-
-# Start application
-CMD ["java", "-jar", "moqui.war"]
-""",
-        "kubernetes-deployment": """
+### Deployment YAML
+```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: moqui-app
+  name: moqui
 spec:
   replicas: 3
   selector:
@@ -139,22 +346,20 @@ spec:
     spec:
       containers:
       - name: moqui
-        image: moqui/moqui-framework:latest
+        image: moqui:latest
         ports:
         - containerPort: 8080
         env:
-        - name: DB_HOST
-          value: "postgres-service"
         - name: DB_USER
           valueFrom:
             secretKeyRef:
-              name: db-secret
-              key: username
+              name: moqui-secrets
+              key: db-user
         - name: DB_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: db-secret
-              key: password
+              name: moqui-secrets
+              key: db-password
         resources:
           requests:
             memory: "1Gi"
@@ -164,421 +369,253 @@ spec:
             cpu: "1000m"
         livenessProbe:
           httpGet:
-            path: /rest/s1/moqui/basic/status
+            path: /rest/s1/moqui/health
             port: 8080
           initialDelaySeconds: 60
-          periodSeconds: 30
+          periodSeconds: 10
         readinessProbe:
           httpGet:
-            path: /rest/s1/moqui/basic/status
+            path: /rest/s1/moqui/health
             port: 8080
           initialDelaySeconds: 30
-          periodSeconds: 10
+          periodSeconds: 5
+```
+
+### Service YAML
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: moqui-service
+spec:
+  selector:
+    app: moqui
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
+  type: LoadBalancer
+```
+
+## 3. Container Best Practices
+- Use multi-stage builds to minimize image size
+- Store secrets in Kubernetes Secrets or Docker Secrets
+- Use health checks for automatic recovery
+- Configure resource limits to prevent resource exhaustion
+- Use persistent volumes for runtime/db and runtime/sessions
 """
-    ]
-    
-    // Monitoring configuration patterns
-    private static final Map<String, String> MONITORING_PATTERNS = [
-        "prometheus-config": """
-# Prometheus configuration for Moqui
-global:
-  scrape_interval: 15s
-  
-scrape_configs:
-  - job_name: 'moqui'
-    static_configs:
-      - targets: ['moqui:8080']
-    metrics_path: '/rest/s1/moqui/basic/metrics'
-    scrape_interval: 30s
-    
-  - job_name: 'postgres'
-    static_configs:
-      - targets: ['postgres-exporter:9187']
-""",
-        "grafana-dashboard": """
-{
-  "dashboard": {
-    "title": "Moqui Application Dashboard",
-    "panels": [
-      {
-        "title": "Request Rate",
-        "type": "graph",
-        "targets": [
-          {
-            "expr": "rate(moqui_requests_total[5m])",
-            "legendFormat": "Requests/sec"
-          }
-        ]
-      },
-      {
-        "title": "Response Time",
-        "type": "graph",
-        "targets": [
-          {
-            "expr": "histogram_quantile(0.95, moqui_request_duration_seconds_bucket)",
-            "legendFormat": "95th percentile"
-          }
-        ]
-      },
-      {
-        "title": "Database Connections",
-        "type": "singlestat",
-        "targets": [
-          {
-            "expr": "moqui_database_connections_active",
-            "legendFormat": "Active Connections"
-          }
-        ]
-      }
-    ]
-  }
-}
-"""
-    ]
-    
-    @Override
-    String getAgentId() { return AGENT_ID }
-    
-    @Override
-    String getAgentName() { return AGENT_NAME }
-    
-    @Override
-    List<String> getCapabilities() { return CAPABILITIES }
-    
-    @Override
-    boolean canHandle(AgentRequest request) {
-        String requestType = request.requestType?.toLowerCase()
-        return requestType in ["deployment", "container", "monitoring", "scaling", "troubleshooting", "devops"]
     }
     
-    @Override
-    AgentResponse processRequest(AgentRequest request) {
-        long startTime = System.currentTimeMillis()
-        
-        try {
-            String guidance = generateGuidance(request)
-            long responseTime = System.currentTimeMillis() - startTime
-            
-            return new AgentResponse(
-                agentId: AGENT_ID,
-                requestId: request.requestId,
-                guidance: guidance,
-                responseTime: responseTime,
-                accuracy: calculateAccuracy(request),
-                success: true
-            )
-        } catch (Exception e) {
-            log.error("Error processing DevOps request: ${e.message}", e)
-            return new AgentResponse(
-                agentId: AGENT_ID,
-                requestId: request.requestId,
-                guidance: "Error processing DevOps request: ${e.message}",
-                responseTime: System.currentTimeMillis() - startTime,
-                accuracy: 0.0,
-                success: false
-            )
-        }
-    }
-    
-    private String generateGuidance(AgentRequest request) {
-        String requestType = request.requestType?.toLowerCase()
-        
-        switch (requestType) {
-            case "deployment":
-                return generateDeploymentGuidance(request)
-            case "container":
-                return generateContainerGuidance(request)
-            case "monitoring":
-                return generateMonitoringGuidance(request)
-            case "scaling":
-                return generateScalingGuidance(request)
-            case "troubleshooting":
-                return generateTroubleshootingGuidance(request)
-            default:
-                return generateGeneralDevOpsGuidance(request)
-        }
-    }
-    
-    /**
-     * AC1: Deployment guidance (3 seconds, 95% accuracy)
-     * Moqui deployment configuration, environment-specific settings
-     */
-    private String generateDeploymentGuidance(AgentRequest request) {
-        MoquiContext context = request.context as MoquiContext
-        String environment = context?.environment ?: "production"
-        
-        StringBuilder guidance = new StringBuilder()
-        guidance.append("# Moqui Deployment Guidance\n\n")
-        
-        // Environment-specific configuration
-        guidance.append("## Environment Configuration (${environment})\n")
-        guidance.append(DEPLOYMENT_PATTERNS["moqui-production"])
-        guidance.append("\n\n")
-        
-        // Docker Compose setup
-        guidance.append("## Docker Compose Configuration\n")
-        guidance.append(DEPLOYMENT_PATTERNS["docker-compose-production"])
-        guidance.append("\n\n")
-        
-        // Deployment checklist
-        guidance.append("## Deployment Checklist\n")
-        guidance.append("- [ ] Database migrations applied\n")
-        guidance.append("- [ ] Environment variables configured\n")
-        guidance.append("- [ ] SSL certificates installed\n")
-        guidance.append("- [ ] Health checks configured\n")
-        guidance.append("- [ ] Backup procedures tested\n")
-        guidance.append("- [ ] Monitoring alerts configured\n")
-        
-        return guidance.toString()
-    }
-    
-    /**
-     * AC2: Container guidance (4 seconds, 97% accuracy)
-     * Docker configuration patterns, container orchestration
-     */
-    private String generateContainerGuidance(AgentRequest request) {
-        MoquiContext context = request.context as MoquiContext
-        String orchestrator = context?.orchestrator ?: "docker-compose"
-        
-        StringBuilder guidance = new StringBuilder()
-        guidance.append("# Container Guidance\n\n")
-        
-        // Optimized Dockerfile
-        guidance.append("## Optimized Dockerfile\n")
-        guidance.append(CONTAINER_PATTERNS["dockerfile-optimized"])
-        guidance.append("\n\n")
-        
-        // Kubernetes deployment if requested
-        if (orchestrator == "kubernetes") {
-            guidance.append("## Kubernetes Deployment\n")
-            guidance.append(CONTAINER_PATTERNS["kubernetes-deployment"])
-            guidance.append("\n\n")
-        }
-        
-        // Container best practices
-        guidance.append("## Container Best Practices\n")
-        guidance.append("- Use multi-stage builds to reduce image size\n")
-        guidance.append("- Run as non-root user for security\n")
-        guidance.append("- Implement proper health checks\n")
-        guidance.append("- Use .dockerignore to exclude unnecessary files\n")
-        guidance.append("- Set resource limits and requests\n")
-        guidance.append("- Use secrets for sensitive configuration\n")
-        
-        return guidance.toString()
-    }
-    
-    /**
-     * AC3: Monitoring guidance (2 seconds, 98% accuracy)
-     * Moqui-specific monitoring, performance tracking patterns
-     */
-    private String generateMonitoringGuidance(AgentRequest request) {
-        StringBuilder guidance = new StringBuilder()
-        guidance.append("# Monitoring Guidance\n\n")
-        
-        // Prometheus configuration
-        guidance.append("## Prometheus Configuration\n")
-        guidance.append(MONITORING_PATTERNS["prometheus-config"])
-        guidance.append("\n\n")
-        
-        // Grafana dashboard
-        guidance.append("## Grafana Dashboard\n")
-        guidance.append(MONITORING_PATTERNS["grafana-dashboard"])
-        guidance.append("\n\n")
-        
-        // Key metrics to monitor
-        guidance.append("## Key Metrics\n")
-        guidance.append("- **Request Rate**: requests/second by endpoint\n")
-        guidance.append("- **Response Time**: P50, P95, P99 percentiles\n")
-        guidance.append("- **Error Rate**: 4xx/5xx responses percentage\n")
-        guidance.append("- **Database**: Connection pool usage, query time\n")
-        guidance.append("- **JVM**: Heap usage, GC frequency, thread count\n")
-        guidance.append("- **System**: CPU, memory, disk usage\n")
-        
-        // Alerting rules
-        guidance.append("\n## Alerting Rules\n")
-        guidance.append("- Response time > 2 seconds (P95)\n")
-        guidance.append("- Error rate > 5% for 5 minutes\n")
-        guidance.append("- Database connections > 80% of pool\n")
-        guidance.append("- JVM heap usage > 85%\n")
-        guidance.append("- Disk usage > 90%\n")
-        
-        return guidance.toString()
-    }
-    
-    /**
-     * AC4: Scaling guidance (5 seconds, 100% accuracy)
-     * Clustering and load balancing, auto-scaling patterns
-     */
-    private String generateScalingGuidance(AgentRequest request) {
-        MoquiContext context = request.context as MoquiContext
-        String scalingType = context?.scalingType ?: "horizontal"
-        
-        StringBuilder guidance = new StringBuilder()
-        guidance.append("# Scaling Guidance\n\n")
-        
-        if (scalingType == "horizontal") {
-            guidance.append("## Horizontal Scaling\n")
-            guidance.append("### Load Balancer Configuration\n")
-            guidance.append("```nginx\n")
-            guidance.append("upstream moqui_backend {\n")
-            guidance.append("    least_conn;\n")
-            guidance.append("    server moqui1:8080 max_fails=3 fail_timeout=30s;\n")
-            guidance.append("    server moqui2:8080 max_fails=3 fail_timeout=30s;\n")
-            guidance.append("    server moqui3:8080 max_fails=3 fail_timeout=30s;\n")
-            guidance.append("}\n")
-            guidance.append("```\n\n")
-            
-            guidance.append("### Session Management\n")
-            guidance.append("- Use Redis for shared session storage\n")
-            guidance.append("- Configure sticky sessions if needed\n")
-            guidance.append("- Ensure stateless service design\n\n")
-        }
-        
-        guidance.append("## Auto-scaling Configuration\n")
-        guidance.append("```yaml\n")
-        guidance.append("apiVersion: autoscaling/v2\n")
-        guidance.append("kind: HorizontalPodAutoscaler\n")
-        guidance.append("metadata:\n")
-        guidance.append("  name: moqui-hpa\n")
-        guidance.append("spec:\n")
-        guidance.append("  scaleTargetRef:\n")
-        guidance.append("    apiVersion: apps/v1\n")
-        guidance.append("    kind: Deployment\n")
-        guidance.append("    name: moqui-app\n")
-        guidance.append("  minReplicas: 2\n")
-        guidance.append("  maxReplicas: 10\n")
-        guidance.append("  metrics:\n")
-        guidance.append("  - type: Resource\n")
-        guidance.append("    resource:\n")
-        guidance.append("      name: cpu\n")
-        guidance.append("      target:\n")
-        guidance.append("        type: Utilization\n")
-        guidance.append("        averageUtilization: 70\n")
-        guidance.append("```\n\n")
-        
-        guidance.append("## Scaling Best Practices\n")
-        guidance.append("- Monitor key performance indicators\n")
-        guidance.append("- Test scaling scenarios regularly\n")
-        guidance.append("- Use circuit breakers for external dependencies\n")
-        guidance.append("- Implement graceful shutdown procedures\n")
-        guidance.append("- Cache frequently accessed data\n")
-        
-        return guidance.toString()
-    }
-    
-    /**
-     * AC5: Troubleshooting guidance (4 seconds, 90% accuracy)
-     * Debugging patterns, problem resolution strategies
-     */
-    private String generateTroubleshootingGuidance(AgentRequest request) {
-        MoquiContext context = request.context as MoquiContext
-        String issue = context?.issue ?: "general"
-        
-        StringBuilder guidance = new StringBuilder()
-        guidance.append("# Troubleshooting Guidance\n\n")
-        
-        // Common issues and solutions
-        guidance.append("## Common Issues\n\n")
-        
-        guidance.append("### Application Won't Start\n")
-        guidance.append("1. Check Java version (requires Java 11+)\n")
-        guidance.append("2. Verify database connectivity\n")
-        guidance.append("3. Check configuration files\n")
-        guidance.append("4. Review startup logs for errors\n\n")
-        
-        guidance.append("### Performance Issues\n")
-        guidance.append("1. Monitor JVM heap usage\n")
-        guidance.append("2. Check database connection pool\n")
-        guidance.append("3. Analyze slow queries\n")
-        guidance.append("4. Review entity cache configuration\n\n")
-        
-        guidance.append("### Database Connection Issues\n")
-        guidance.append("1. Verify database server is running\n")
-        guidance.append("2. Check connection string and credentials\n")
-        guidance.append("3. Test network connectivity\n")
-        guidance.append("4. Review connection pool settings\n\n")
-        
-        // Debugging commands
-        guidance.append("## Debugging Commands\n")
-        guidance.append("```bash\n")
-        guidance.append("# Check application logs\n")
-        guidance.append("docker logs moqui-app\n\n")
-        guidance.append("# Monitor resource usage\n")
-        guidance.append("docker stats moqui-app\n\n")
-        guidance.append("# Check database connectivity\n")
-        guidance.append("docker exec moqui-app curl -f http://localhost:8080/rest/s1/moqui/basic/status\n\n")
-        guidance.append("# View JVM metrics\n")
-        guidance.append("curl http://localhost:8080/rest/s1/moqui/basic/metrics\n")
-        guidance.append("```\n\n")
-        
-        // Log analysis patterns
-        guidance.append("## Log Analysis\n")
-        guidance.append("- Look for ERROR and WARN level messages\n")
-        guidance.append("- Check for OutOfMemoryError or StackOverflowError\n")
-        guidance.append("- Monitor SQL query execution times\n")
-        guidance.append("- Review security-related log entries\n")
-        guidance.append("- Check for connection timeout errors\n")
-        
-        return guidance.toString()
-    }
-    
-    private String generateGeneralDevOpsGuidance(AgentRequest request) {
+    // AC3: Monitoring guidance (2 seconds, 98% accuracy)
+    private String provideMonitoringGuidance(AgentRequest request) {
         return """
-# General DevOps Guidance
+# Moqui Monitoring Setup
 
-## Moqui Framework Operations
+## 1. Health Check Endpoint
+- **URL**: /rest/s1/moqui/health
+- **Response**: JSON with system status
+- **Frequency**: Every 30 seconds
 
-### Deployment Pipeline
-1. Build application with Gradle
-2. Run automated tests
-3. Build Docker image
-4. Deploy to staging environment
-5. Run integration tests
-6. Deploy to production
+## 2. JMX Monitoring
+```bash
+# Enable JMX in JAVA_OPTS
+-Dcom.sun.management.jmxremote
+-Dcom.sun.management.jmxremote.port=9010
+-Dcom.sun.management.jmxremote.authenticate=false
+-Dcom.sun.management.jmxremote.ssl=false
+```
 
-### Monitoring Stack
-- Prometheus for metrics collection
-- Grafana for visualization
-- ELK stack for log aggregation
-- Jaeger for distributed tracing
+## 3. Application Metrics
+- Request count and response times
+- Database connection pool usage
+- Cache hit/miss rates
+- Session count and duration
+- Error rates by endpoint
 
-### Security Considerations
-- Use secrets management (Vault, K8s secrets)
-- Implement network policies
-- Regular security scanning
-- SSL/TLS encryption everywhere
+## 4. Infrastructure Metrics
+- CPU usage per container/node
+- Memory usage and GC activity
+- Disk I/O and space usage
+- Network throughput
 
-### Backup Strategy
-- Database backups every 4 hours
-- Application state backups
-- Configuration backups
-- Test restore procedures regularly
+## 5. Logging Configuration
+```xml
+<screen-facade>
+    <screen-output type="text/html">
+        <log-level name="org.moqui" level="INFO"/>
+        <log-level name="org.moqui.impl.service" level="DEBUG"/>
+    </screen-output>
+</screen-facade>
+```
+
+## 6. Alerting Rules
+- Response time > 2 seconds: Warning
+- Error rate > 5%: Critical
+- Database connection pool > 80%: Warning
+- Memory usage > 85%: Warning
+- Disk space < 10%: Critical
 """
     }
     
-    private double calculateAccuracy(AgentRequest request) {
-        String requestType = request.requestType?.toLowerCase()
-        
-        // Return accuracy based on request type (matching AC requirements)
-        switch (requestType) {
-            case "deployment": return 0.95      // AC1: 95% accuracy
-            case "container": return 0.97       // AC2: 97% accuracy
-            case "monitoring": return 0.98      // AC3: 98% accuracy
-            case "scaling": return 1.0          // AC4: 100% accuracy
-            case "troubleshooting": return 0.90 // AC5: 90% accuracy
-            default: return 0.93                // Average accuracy
-        }
+    // AC3: Performance tracking guidance
+    private String providePerformanceTrackingGuidance(AgentRequest request) {
+        return """
+# Moqui Performance Tracking
+
+## 1. Built-in Performance Monitoring
+- Enable service call timing in MoquiConf.xml
+- Track entity query performance
+- Monitor screen render times
+
+## 2. Custom Metrics
+```groovy
+// In service implementation
+long startTime = System.currentTimeMillis()
+// ... service logic ...
+long duration = System.currentTimeMillis() - startTime
+ec.logger.info("Service execution time: \${duration}ms")
+```
+
+## 3. Database Query Performance
+- Enable slow query logging in PostgreSQL
+- Monitor query execution plans
+- Track connection pool metrics
+
+## 4. Performance Baselines
+- P50 response time: < 500ms
+- P95 response time: < 2000ms
+- P99 response time: < 5000ms
+- Database query time: < 100ms (P95)
+"""
     }
     
-    @Override
-    Map<String, Object> getHealth() {
-        return [
-            status: "healthy",
-            agentId: AGENT_ID,
-            capabilities: CAPABILITIES,
-            lastCheck: new Date(),
-            responseTime: "2-5 seconds",
-            accuracy: "90-100%"
-        ]
+    // AC5: Troubleshooting guidance (4 seconds, 90% accuracy)
+    private String provideTroubleshootingGuidance(AgentRequest request) {
+        String issue = request.context?.issue ?: "general"
+        
+        return """
+# Moqui Troubleshooting Guide: ${issue}
+
+## Common Issues and Solutions
+
+### 1. Application Won't Start
+- Check Java version: `java -version` (must be 11+)
+- Verify database connectivity
+- Check logs: runtime/log/moqui.log
+- Validate MoquiConf.xml syntax
+
+### 2. Database Connection Errors
+- Verify database is running
+- Check credentials in environment variables
+- Test connection: `psql -h localhost -U moqui_user -d moqui`
+- Check connection pool settings
+
+### 3. Performance Issues
+- Check database query performance
+- Monitor JVM memory usage
+- Review cache configuration
+- Check for N+1 query problems
+
+### 4. Memory Leaks
+- Enable heap dump on OutOfMemoryError
+- Use JVisualVM or JProfiler
+- Check for unclosed database connections
+- Review cache size limits
+
+### 5. Session Issues
+- Verify session timeout configuration
+- Check session storage (database or file)
+- Monitor session count
+- Review cookie configuration
+
+## Debugging Tools
+- Logs: runtime/log/moqui.log
+- JMX: Connect with JConsole or VisualVM
+- Database: Check pg_stat_activity for active queries
+- Health endpoint: /rest/s1/moqui/health
+
+## Emergency Procedures
+1. Restart application: `systemctl restart moqui`
+2. Clear cache: Delete runtime/db/h2 or runtime/sessions
+3. Database rollback: Use transaction logs
+4. Failover: Switch to backup instance
+"""
+    }
+    
+    // AC4: Scaling guidance (5 seconds, 100% accuracy)
+    private String provideScalingGuidance(AgentRequest request) {
+        return """
+# Moqui Scaling Guidance
+
+## 1. Horizontal Scaling (Recommended)
+- Add more Moqui instances behind load balancer
+- Use shared database and file storage
+- Configure distributed cache (Hazelcast)
+- Implement session replication
+
+### Scaling Strategy
+- Start with 2-3 instances for redundancy
+- Add instances based on CPU/memory usage
+- Target 60-70% resource utilization per instance
+- Use auto-scaling based on request rate
+
+## 2. Vertical Scaling
+- Increase JVM heap size: -Xmx4g -Xms1g
+- Add more CPU cores (Moqui is multi-threaded)
+- Increase database connection pool size
+- Optimize database with more RAM
+
+## 3. Database Scaling
+- Use read replicas for reporting queries
+- Implement connection pooling (50-100 connections)
+- Partition large tables by date or tenant
+- Use database caching (Redis/Memcached)
+
+## 4. Caching Strategy
+- Enable entity cache for frequently accessed data
+- Use screen cache for static content
+- Implement CDN for static assets
+- Configure cache expiration policies
+
+## 5. Performance Optimization
+- Optimize database queries and indexes
+- Use view-entities for complex queries
+- Implement lazy loading for large datasets
+- Compress HTTP responses
+
+## 6. Monitoring for Scaling Decisions
+- CPU usage > 70%: Add instances
+- Memory usage > 80%: Increase heap or add instances
+- Database connections > 80%: Scale database or add read replicas
+- Response time > 2s: Investigate bottlenecks
+
+## 7. Auto-Scaling Configuration (Kubernetes)
+```yaml
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: moqui-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: moqui
+  minReplicas: 2
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
+```
+"""
     }
 }
