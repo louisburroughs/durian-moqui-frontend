@@ -3,7 +3,7 @@
 ## Root Directory Layout
 
 ```
-moqui_example/
+durion-moqui-frontend/
 ├── framework/              # Moqui Framework core
 ├── runtime/               # Runtime environment and components
 ├── docker/                # Docker configurations and scripts

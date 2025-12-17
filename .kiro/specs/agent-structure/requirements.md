@@ -1,8 +1,8 @@
-# Moqui_Example Agent Structure Requirements
+# Durion-Moqui-Frontend Agent Structure Requirements
 
 ## Introduction
 
-The moqui_example project implements the Durion Enterprise Tire Service Management System (DETSMS) using the Moqui Framework. This system requires specialized AI agents that provide domain-specific expertise for developing, testing, deploying, and maintaining the multi-domain tire service management application. The agent structure should support the unique characteristics of Moqui Framework development while integrating with the workspace-level agents for cross-project coordination.
+The durion-moqui-frontend project implements the Durion Enterprise Tire Service Management System (DETSMS) using the Moqui Framework. This system requires specialized AI agents that provide domain-specific expertise for developing, testing, deploying, and maintaining the multi-domain tire service management application. The agent structure should support the unique characteristics of Moqui Framework development while integrating with the workspace-level agents for cross-project coordination.
 
 This requirements document follows EARS (Easy Approach to Requirements Syntax) patterns and INCOSE (International Council on Systems Engineering) quality standards to ensure measurable, testable, and traceable requirements.
 
@@ -13,13 +13,13 @@ This requirements document follows EARS (Easy Approach to Requirements Syntax) p
 - **Domain Component**: A Moqui component representing a business domain (durion-workexec, durion-inventory, etc.)
 - **Experience Layer**: Orchestration services providing task-oriented APIs for UI/Mobile/MCP
 - **MCP Integration**: Model Context Protocol for conversational AI capabilities
-- **Durion-Positivity**: Experience API component that provides an API layer to expose business logic via APIs in place of UIs in other components, enabling cross-domain communication and integration with positivity backend APIs
+- **durion-positivity**: Moqui integration component providing API layer for connecting Durion frontend with durion-positivity-backend services (Spring Boot microservices), enabling cross-domain communication
 - **Durion-Theme**: Component responsible for the look and feel of the UI and common UI components across all DETSMS domains
-- **Database Usage Rule**: Moqui_example can use a database for state maintenance and caching purposes, but all business-related data and transactions must be provided at the positivity level
+- **Database Usage Rule**: durion-moqui-frontend can use a database for state maintenance and caching purposes, but all business-related data and transactions must be provided by durion-positivity-backend services
 - **Vertical Slice**: Domain-organized development owning full stack (Moqui → Experience → UI/MCP)
 - **Agent Response Time**: Time from developer query initiation to agent guidance delivery
 - **Guidance Accuracy**: Percentage of agent recommendations that result in successful implementation
-- **Integration Success Rate**: Percentage of successful positivity API integrations following agent guidance
+- **Integration Success Rate**: Percentage of successful durion-positivity-backend API integrations following agent guidance
 
 ## Functional Requirements
 
@@ -35,9 +35,9 @@ This requirements document follows EARS (Easy Approach to Requirements Syntax) p
 
 #### Acceptance Criteria
 
-1. WHEN a developer initiates Moqui component development, THE Agent Structure System SHALL provide specialized Moqui Framework guidance within 2 seconds with 95% accuracy for positivity API integration patterns
-2. WHEN a developer requests business logic implementation guidance, THE Agent Structure System SHALL ensure proper positivity backend API integration recommendations within 3 seconds with 90% success rate and create API specifications for missing functionality within 5 minutes
-3. WHEN a developer requires data persistence guidance, THE Agent Structure System SHALL recommend positivity backend APIs for business data within 2 seconds with 95% accuracy while allowing local database usage for state maintenance and caching
+1. WHEN a developer initiates Moqui component development, THE Agent Structure System SHALL provide specialized Moqui Framework guidance within 2 seconds with 95% accuracy for durion-positivity-backend API integration patterns
+2. WHEN a developer requests business logic implementation guidance, THE Agent Structure System SHALL ensure proper durion-positivity-backend API integration recommendations within 3 seconds with 90% success rate and create API specifications for missing functionality within 5 minutes
+3. WHEN a developer requires data persistence guidance, THE Agent Structure System SHALL recommend durion-positivity-backend APIs for business data within 2 seconds with 95% accuracy while allowing local database usage for state maintenance and caching
 4. WHEN a developer builds Moqui screens, THE Agent Structure System SHALL validate proper use of Moqui screen widgets, forms, and UI patterns within 1 second with 98% pattern compliance
 5. WHEN a developer integrates components, THE Agent Structure System SHALL enforce proper component dependencies and Moqui framework integration within 2 seconds with 100% dependency validation accuracy
 

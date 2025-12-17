@@ -70,3 +70,7 @@ Desktop.ini
 
 # Linux auto files
 *~
+
+### AI Session Files ###
+.ai/session.md
+.ai/session-*.md

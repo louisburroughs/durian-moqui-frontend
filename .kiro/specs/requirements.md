@@ -10,9 +10,10 @@ The Durion Enterprise Tire Service Management System (DETSMS) is a comprehensive
 - **Work Execution Domain**: Business domain managing the estimate to payment workflow
 - **Experience Layer**: Orchestration services providing task-oriented APIs for UI/Mobile/MCP integration
 - **MCP**: Model Context Protocol for conversational AI integration
-- **Durion-Positivity**: Experience API component providing API layer to expose business logic via APIs
+- **durion-positivity**: Moqui integration component providing REST API layer to connect frontend with durion-positivity-backend services
+- **durion-positivity-backend**: Spring Boot microservices backend repository (Java 21) providing business logic and data persistence
 - **Durion-Theme**: Component responsible for UI look and feel and common UI components
-- **Positivity Backend**: Spring Boot microservices system providing business logic and data persistence
+- **durion-positivity-backend**: Spring Boot microservices system (separate repository) providing business logic and data persistence services
 - **Service Writer**: User role responsible for creating estimates and managing customer service requests
 - **Service Advisor**: User role responsible for customer interaction and service coordination
 - **Mechanic**: User role responsible for executing work orders and updating job status

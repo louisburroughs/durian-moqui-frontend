@@ -4,7 +4,7 @@
 
 This design document outlines the technical architecture for the Durion Enterprise Tire Service Management System (DETSMS), a comprehensive tire service management system built on the Moqui Framework. The system implements a vertical slice architecture across five primary domains: Work Execution & Billing, Inventory Control, Product & Pricing, CRM, and Accounting, with a two-layer service architecture consisting of Moqui Base Layer and Experience Layer.
 
-The design follows domain-driven design principles with clear boundaries, uses the durion-positivity integration layer for cross-domain communication, and provides multiple interfaces including UI, Mobile, and MCP (Model Context Protocol) for conversational AI integration.
+The design follows domain-driven design principles with clear boundaries, uses the durion-positivity integration component to communicate with durion-positivity-backend services, and provides multiple interfaces including UI, Mobile, and MCP (Model Context Protocol) for conversational AI integration.
 
 ## Architecture
 
