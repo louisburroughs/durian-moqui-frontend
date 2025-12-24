@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 set -euo pipefail
 
-REPO="louisburroughs/moqui_example"
+REPO="louisburroughs/durion-moqui-frontend"
 
 # Disable gh pager
 export PAGER=cat

@@ -129,7 +129,7 @@ The Durion Enterprise Tire Service Management System (DETSMS) is a comprehensive
 
 **User Story:** As a frontend agent, I want clear orchestration guidance from the workspace, so that I can select DETSMS frontend stories that are ready to implement without creating unnecessary backend stubs.
 
-**Design Reference:** Workspace Story Orchestration Integration in [moqui_example/.kiro/specs/design.md](moqui_example/.kiro/specs/design.md#workspace-story-orchestration-integration).
+**Design Reference:** Workspace Story Orchestration Integration in [durion-moqui-frontend/.kiro/specs/design.md](durion-moqui-frontend/.kiro/specs/design.md#workspace-story-orchestration-integration).
 
 #### Acceptance Criteria
 

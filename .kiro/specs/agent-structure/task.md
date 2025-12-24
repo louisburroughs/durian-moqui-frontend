@@ -15,8 +15,8 @@ This plan operationalizes frontend Requirement 11 and the Workspace Story Orches
   - durion/.github/orchestration/story-sequence.md
   - durion/.github/orchestration/frontend-coordination.md
 - DETSMS requirements and design:
-  - moqui_example/.kiro/specs/requirements.md
-  - moqui_example/.kiro/specs/design.md
+  - durion-moqui-frontend/.kiro/specs/requirements.md
+  - durion-moqui-frontend/.kiro/specs/design.md
 - DETSMS frontend [STORY] issues in durion-moqui-frontend.
 
 ## Outputs

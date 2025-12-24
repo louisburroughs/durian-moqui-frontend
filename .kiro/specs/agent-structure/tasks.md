@@ -121,7 +121,7 @@
   - **AC5**: Provide architecture guidance in 2 seconds with 100% compliance
     - Component structure and dependencies
     - Moqui Framework version compatibility
-- **Location**: `moqui_example/runtime/component/moqui-agents/src/main/java/com/example/moquiagents/agents/foundation/MoquiFrameworkAgent.java`
+- **Location**: `durion-moqui-frontend/runtime/component/moqui-agents/src/main/java/com/example/moquiagents/agents/foundation/MoquiFrameworkAgent.java`
 - **Requirements**: REQ-001 (all 5 acceptance criteria)
 - **Performance Targets**: 2-3 second response time, 95-100% accuracy
 - **Test Cases**: TC-001, TC-002, TC-003
@@ -136,7 +136,7 @@
 - [x] Write property tests in `AgentPerformanceProperties.java`
   - **Property 1**: Response time bounds (all agent types)
   - **Property 2**: Accuracy thresholds (entity 95%, service 98%, screen 92%)
-- **Location**: `moqui_example/runtime/component/moqui-agents/src/test/java/com/example/moquiagents/`, `moqui_example/runtime/component/moqui-agents/src/test/java/com/example/moquiagents/properties/`
+- **Location**: `durion-moqui-frontend/runtime/component/moqui-agents/src/test/java/com/example/moquiagents/`, `durion-moqui-frontend/runtime/component/moqui-agents/src/test/java/com/example/moquiagents/properties/`
 - **Requirements**: REQ-001, REQ-009 (Performance)
 - **Validates**: All REQ-001 acceptance criteria with formal property-based tests
 
@@ -147,7 +147,7 @@
   - durion-positivity integration pattern enforcement
   - Moqui Framework version compatibility checks
   - Architectural decision tracking
-- **Location**: `moqui_example/runtime/component/moqui-agents/src/main/java/com/example/moquiagents/agents/foundation/ArchitectureAgent.java`
+- **Location**: `durion-moqui-frontend/runtime/component/moqui-agents/src/main/java/com/example/moquiagents/agents/foundation/ArchitectureAgent.java`
 - **Requirements**: REQ-001 AC5 (Architecture guidance support)
 - **Performance Targets**: 2 second response time
 - **Test Cases**: TC-001 (Architecture compliance)
@@ -159,7 +159,7 @@
   - State management (Pinia) guidance
   - Quasar v2 component usage
   - Moqui screen integration patterns
-- **Location**: `moqui_example/runtime/component/moqui-agents/src/main/java/com/example/moquiagents/agents/foundation/VueJSAgent.java`
+- **Location**: `durion-moqui-frontend/runtime/component/moqui-agents/src/main/java/com/example/moquiagents/agents/foundation/VueJSAgent.java`
 - **Requirements**: REQ-001 AC3 (Screen development includes Vue.js)
 - **Performance Targets**: 2 second response time
 - **Test Cases**: TC-003 (UI testing includes Vue.js)
@@ -188,7 +188,7 @@
     - Accounts receivable, payment processing
     - Invoice, Payment, Ledger entities
     - Basic accounting integration patterns
-- **Location**: `moqui_example/runtime/component/moqui-agents/src/main/java/com/example/moquiagents/agents/implementation/DomainAgent.java`
+- **Location**: `durion-moqui-frontend/runtime/component/moqui-agents/src/main/java/com/example/moquiagents/agents/implementation/DomainAgent.java`
 - **Requirements**: REQ-002 (all 5 acceptance criteria)
 - **Performance Targets**: 2-3 second response time, 92-99% accuracy by domain
 - **Test Cases**: TC-004, TC-005, TC-006
@@ -204,7 +204,7 @@
 - [x] Write property tests for domain expertise
   - **Property 2**: Accuracy thresholds by domain (92-99%)
   - **Property 7**: Data architecture compliance (no direct business data access)
-- **Location**: `moqui_example/runtime/component/moqui-agents/src/test/java/com/example/moquiagents/`
+- **Location**: `durion-moqui-frontend/runtime/component/moqui-agents/src/test/java/com/example/moquiagents/`
 - **Requirements**: REQ-002, Data Architecture Constraints
 - **Validates**: All 5 domain accuracy targets, business data access rules
 
@@ -225,7 +225,7 @@
   - **AC5**: User journey guidance (3 seconds, 92% accuracy)
     - Multi-step workflow orchestration
     - State management across journeys
-- **Location**: `moqui_example/runtime/component/moqui-agents/src/main/java/com/example/moquiagents/agents/implementation/ExperienceLayerAgent.java`
+- **Location**: `durion-moqui-frontend/runtime/component/moqui-agents/src/main/java/com/example/moquiagents/agents/implementation/ExperienceLayerAgent.java`
 - **Requirements**: REQ-003 (all 5 acceptance criteria)
 - **Performance Targets**: 2-3 second response time, 90-97% accuracy
 - **Test Cases**: TC-007, TC-008, TC-009
@@ -237,7 +237,7 @@
   - State management with Pinia
   - Moqui screen integration
   - Responsive design patterns
-- **Location**: `moqui_example/runtime/component/moqui-agents/src/main/java/com/example/moquiagents/agents/implementation/FrontendAgent.java`
+- **Location**: `durion-moqui-frontend/runtime/component/moqui-agents/src/main/java/com/example/moquiagents/agents/implementation/FrontendAgent.java`
 - **Requirements**: REQ-001 AC3, REQ-003 AC2 (UI development)
 - **Test Cases**: TC-003 (Screen development)
 
@@ -260,7 +260,7 @@
   - **AC5**: External integration security (2 seconds, 99% compliance)
     - Secure API integration patterns
     - Credential management
-- **Location**: `moqui_example/runtime/component/moqui-agents/src/main/java/com/example/moquiagents/agents/infrastructure/SecurityAgent.java`
+- **Location**: `durion-moqui-frontend/runtime/component/moqui-agents/src/main/java/com/example/moquiagents/agents/infrastructure/SecurityAgent.java`
 - **Requirements**: REQ-004 (all 5 acceptance criteria), REQ-011 (Security Requirements)
 - **Performance Targets**: 1-3 second response time, 99-100% compliance
 - **Test Cases**: TC-010, TC-011, TC-012, TC-031, TC-032, TC-033
@@ -277,7 +277,7 @@
     - TLS 1.3 encryption
     - Audit trail completeness
     - Threat detection within 5 seconds
-- **Location**: `moqui_example/runtime/component/moqui-agents/src/test/java/com/example/moquiagents/`, `moqui_example/runtime/component/moqui-agents/src/test/java/com/example/moquiagents/properties/`
+- **Location**: `durion-moqui-frontend/runtime/component/moqui-agents/src/test/java/com/example/moquiagents/`, `durion-moqui-frontend/runtime/component/moqui-agents/src/test/java/com/example/moquiagents/properties/`
 - **Requirements**: REQ-004, REQ-011
 - **Validates**: All security requirements with formal properties
 
@@ -298,7 +298,7 @@
   - **AC5**: Troubleshooting guidance (4 seconds, 90% accuracy)
     - Debugging patterns
     - Problem resolution strategies
-- **Location**: `moqui_example/runtime/component/moqui-agents/src/main/java/com/example/moquiagents/agents/infrastructure/DevOpsAgent.java`
+- **Location**: `durion-moqui-frontend/runtime/component/moqui-agents/src/main/java/com/example/moquiagents/agents/infrastructure/DevOpsAgent.java`
 - **Requirements**: REQ-006 (all 5 acceptance criteria), REQ-010 (Reliability)
 - **Performance Targets**: 2-5 second response time, 90-100% accuracy
 - **Test Cases**: TC-016, TC-017, TC-018, TC-028, TC-029, TC-030
@@ -311,7 +311,7 @@
   - Query performance optimization
   - Database migration patterns
   - **Data Architecture Rule Enforcement**: Validate local DB usage (state/cache only)
-- **Location**: `moqui_example/runtime/component/moqui-agents/src/main/java/com/example/moquiagents/agents/infrastructure/DatabaseAgent.java`
+- **Location**: `durion-moqui-frontend/runtime/component/moqui-agents/src/main/java/com/example/moquiagents/agents/infrastructure/DatabaseAgent.java`
 - **Requirements**: REQ-001 AC1 (Entity guidance), Data Architecture Constraints
 - **Test Cases**: TC-001, Property 7 (Data architecture compliance)
 
@@ -340,7 +340,7 @@
   - **AC5**: External integration testing (3 seconds, 100% coverage)
     - durion-positivity integration tests
     - Circuit breaker testing
-- **Location**: `moqui_example/runtime/component/moqui-agents/src/main/java/com/example/moquiagents/agents/quality/TestingAgent.java`
+- **Location**: `durion-moqui-frontend/runtime/component/moqui-agents/src/main/java/com/example/moquiagents/agents/quality/TestingAgent.java`
 - **Requirements**: REQ-005 (all 5 acceptance criteria)
 - **Performance Targets**: 2-4 second response time, 90-100% coverage
 - **Test Cases**: TC-013, TC-014, TC-015
@@ -362,7 +362,7 @@
   - **AC5**: Monitoring guidance (2 seconds, 100% coverage, 98% accuracy)
     - Moqui-specific metrics
     - Alerting patterns
-- **Location**: `moqui_example/runtime/component/moqui-agents/src/main/java/com/example/moquiagents/agents/quality/PerformanceAgent.java`
+- **Location**: `durion-moqui-frontend/runtime/component/moqui-agents/src/main/java/com/example/moquiagents/agents/quality/PerformanceAgent.java`
 - **Requirements**: REQ-008 (all 5 acceptance criteria), REQ-009 (Performance Requirements)
 - **Performance Targets**: 2-4 second response time, 95-100% accuracy
 - **Test Cases**: TC-022, TC-023, TC-024, TC-025, TC-026, TC-027
@@ -374,7 +374,7 @@
   - Scope creep guidance
   - Code quality review patterns
   - Best practice enforcement
-- **Location**: `moqui_example/runtime/component/moqui-agents/src/main/java/com/example/moquiagents/agents/quality/PairNavigatorAgent.java`
+- **Location**: `durion-moqui-frontend/runtime/component/moqui-agents/src/main/java/com/example/moquiagents/agents/quality/PairNavigatorAgent.java`
 - **Requirements**: Cross-requirement (Quality assurance support)
 - **Test Cases**: Integration with all other agents
 
@@ -388,7 +388,7 @@
     - 100% data consistency
     - 80% functionality retention
     - 60-second anomaly detection
-- **Location**: `moqui_example/runtime/component/moqui-agents/src/test/java/com/example/moquiagents/properties/`
+- **Location**: `durion-moqui-frontend/runtime/component/moqui-agents/src/test/java/com/example/moquiagents/properties/`
 - **Requirements**: REQ-009, REQ-010
 - **Validates**: Performance and reliability requirements
     - UI performance patterns
@@ -448,7 +448,7 @@
   - **AC5**: Documentation sync guidance (2 seconds, 99% sync accuracy, 100% version consistency)
     - Component evolution tracking
     - Documentation update automation
-- **Location**: `moqui_example/runtime/component/moqui-agents/src/main/java/com/example/moquiagents/agents/support/DocumentationAgent.java`
+- **Location**: `durion-moqui-frontend/runtime/component/moqui-agents/src/main/java/com/example/moquiagents/agents/support/DocumentationAgent.java`
 - **Requirements**: REQ-007 (all 5 acceptance criteria)
 - **Performance Targets**: 2-5 second response time, 90-100% accuracy
 - **Test Cases**: TC-019, TC-020, TC-021
@@ -465,7 +465,7 @@
     - External system failure handling (3 sec, 85% workaround success)
     - Workspace communication failure handling (maintain 80% capability)
     - Database connectivity failure handling (2 sec, 100% data protection)
-- **Location**: `moqui_example/runtime/component/moqui-agents/src/main/java/com/example/moquiagents/agents/support/IntegrationAgent.java`
+- **Location**: `durion-moqui-frontend/runtime/component/moqui-agents/src/main/java/com/example/moquiagents/agents/support/IntegrationAgent.java`
 - **Requirements**: REQ-003 AC4, REQ-013, REQ-014
 - **Test Cases**: TC-009, TC-037, TC-038, TC-039, TC-040, TC-041, TC-042
 
@@ -479,7 +479,7 @@
   - Test external system failures
   - Test workspace communication failures
   - Test database connectivity failures
-- **Location**: `moqui_example/runtime/component/moqui-agents/src/test/java/com/example/moquiagents/properties/`
+- **Location**: `durion-moqui-frontend/runtime/component/moqui-agents/src/test/java/com/example/moquiagents/properties/`
 - **Requirements**: REQ-013, REQ-014
 - **Validates**: All integration failure scenarios with recovery time/accuracy targets
 
@@ -490,7 +490,7 @@
   - Contract versioning patterns
   - Breaking change detection
   - Cross-project contract coordination
-- **Location**: `moqui_example/runtime/component/moqui-agents/src/main/java/com/example/moquiagents/agents/support/APIContractAgent.java`
+- **Location**: `durion-moqui-frontend/runtime/component/moqui-agents/src/main/java/com/example/moquiagents/agents/support/APIContractAgent.java`
 - **Requirements**: REQ-003 AC4, REQ-007 AC4
 - **Test Cases**: TC-009, TC-021
 
@@ -525,7 +525,7 @@
   - Context-sensitive help (F1 key)
   - 2-click access to all documentation
   - Full-text search
-- **Location**: `moqui_example/runtime/component/moqui-agents/src/main/java/com/example/moquiagents/agents/support/UsabilityManager.java`
+- **Location**: `durion-moqui-frontend/runtime/component/moqui-agents/src/main/java/com/example/moquiagents/agents/support/UsabilityManager.java`
 - **Requirements**: REQ-012 (all 5 acceptance criteria)
 - **Test Cases**: TC-034, TC-035, TC-036
 
@@ -535,7 +535,7 @@
     - 80% productivity in 2 hours training
     - 95% guidance relevance
     - 90% intent recognition
-- **Location**: `moqui_example/runtime/component/moqui-agents/src/test/java/com/example/moquiagents/properties/`
+- **Location**: `durion-moqui-frontend/runtime/component/moqui-agents/src/test/java/com/example/moquiagents/properties/`
 - **Requirements**: REQ-012
 - **Validates**: All usability and developer experience targets
 
@@ -551,7 +551,7 @@
   - [ ] Property 6: Performance scalability (implemented in Task 4.4)
   - [ ] Property 7: Data architecture compliance (implemented in Task 7.1)
   - [ ] Property 8: Usability targets (implemented in Task 6.2)
-- **Location**: `moqui_example/runtime/component/moqui-agents/src/test/java/com/example/moquiagents/properties/`
+- **Location**: `durion-moqui-frontend/runtime/component/moqui-agents/src/test/java/com/example/moquiagents/properties/`
 - **Requirements**: All 14 requirements
 - **Validates**: Complete requirements coverage with formal verification
 
@@ -561,7 +561,7 @@
   - Verify all 70 acceptance criteria are tested
   - Verify all 42 test cases (TC-001 through TC-042) exist
   - Generate traceability report
-- **Location**: `moqui_example/runtime/component/moqui-agents/src/test/java/com/example/moquiagents/integration/RequirementsTraceabilityTest.java`
+- **Location**: `durion-moqui-frontend/runtime/component/moqui-agents/src/test/java/com/example/moquiagents/integration/RequirementsTraceabilityTest.java`
 - **Requirements**: All requirements
 - **Validates**: 100% requirements coverage
 
@@ -573,7 +573,7 @@
 - [x] Implement fallback for workspace communication failures
   - Local operation mode (80% capability retention)
   - Request queueing for later processing
-- **Location**: `moqui_example/runtime/component/moqui-agents/src/main/java/com/example/moquiagents/agents/core/WorkspaceCoordination.java`
+- **Location**: `durion-moqui-frontend/runtime/component/moqui-agents/src/main/java/com/example/moquiagents/agents/core/WorkspaceCoordination.java`
 - **Requirements**: REQ-014 AC4 (Workspace communication failures)
 - **Test Cases**: TC-042
 
@@ -589,7 +589,7 @@
   - SLA violation alerts
   - Error rate spike detection
   - Resource exhaustion warnings
-- **Location**: `moqui_example/runtime/component/moqui-agents/src/main/java/com/example/moquiagents/agents/core/PerformanceMonitoring.java`
+- **Location**: `durion-moqui-frontend/runtime/component/moqui-agents/src/main/java/com/example/moquiagents/agents/core/PerformanceMonitoring.java`
 - **Requirements**: REQ-009 (Performance monitoring)
 - **Test Cases**: TC-026
 
@@ -602,7 +602,7 @@
   - 30-second automatic failover
   - 100% data consistency guarantee
   - 80% functionality during degradation
-- **Location**: Deployment configuration (moqui_example/docker/compose configs)
+- **Location**: Deployment configuration (durion-moqui-frontend/docker/compose configs)
 - **Requirements**: REQ-010 (all 5 acceptance criteria)
 - **Test Cases**: TC-028, TC-029, TC-030
 
@@ -637,7 +637,7 @@
   - durion/.github/orchestration/story-sequence.md (global ordering and classification)
   - durion/.github/orchestration/frontend-coordination.md (Ready, Blocked, Parallel stories)
 - [ ] Verify agents check timestamps on orchestration documents and, when data is stale, request an orchestration refresh from the workspace (via issues, not direct code changes).
-- **Location**: moqui_example/.kiro/specs/requirements.md (Requirement 11), moqui_example/.kiro/specs/design.md (Workspace Story Orchestration Integration), moqui_example/.kiro/specs/agent-structure/task.md (DETSMS Frontend Agent Orchestrated Task Plan)
+- **Location**: durion-moqui-frontend/.kiro/specs/requirements.md (Requirement 11), durion-moqui-frontend/.kiro/specs/design.md (Workspace Story Orchestration Integration), durion-moqui-frontend/.kiro/specs/agent-structure/task.md (DETSMS Frontend Agent Orchestrated Task Plan)
 - **Requirements**: Requirement 11 (Frontend Agent Orchestration Guidance)
 
 ### Task 9.2: Build an Orchestration-Aware Frontend Planning Backlog
@@ -645,7 +645,7 @@
   - Extracting all stories marked Ready or Parallel
   - Grouping stories by DETSMS domain (Work Execution & Billing, Inventory Control, Product & Pricing, CRM, Accounting)
   - Cross-checking each story against DETSMS requirements and design to ensure domain alignment
-- **Location**: moqui_example/.kiro/specs/agent-structure/task.md (Sections: "Build a Frontend Planning Backlog"), moqui_example/.kiro/specs/requirements.md
+- **Location**: durion-moqui-frontend/.kiro/specs/agent-structure/task.md (Sections: "Build a Frontend Planning Backlog"), durion-moqui-frontend/.kiro/specs/requirements.md
 - **Requirements**: Requirement 11
 
 ### Task 9.3: Encode Stub-Avoidance Rules for Frontend Stories
@@ -653,7 +653,7 @@
   - Do NOT select Blocked stories unless frontend-coordination.md explicitly allows a stub and describes constraints
   - Record stub behavior, response shape, and error handling in Notes for Agents when stubs are used
   - Isolate any allowed stub implementations behind adapter/service layers to make later replacement trivial
-- **Location**: moqui_example/.kiro/specs/agent-structure/task.md (Section: "Apply Stub-Avoidance Rules"), related Notes for Agents guidance
+- **Location**: durion-moqui-frontend/.kiro/specs/agent-structure/task.md (Section: "Apply Stub-Avoidance Rules"), related Notes for Agents guidance
 - **Requirements**: Requirement 11 (AC2), Frontend Agent Orchestration Awareness
 
 ### Task 9.4: Implement Guidance for Parallel and Ready Stories
@@ -661,7 +661,7 @@
   - Use API contracts and payload examples from orchestration documents and Notes for Agents
   - For Parallel stories, design Moqui services, screens, and Vue components assuming documented contracts without requiring live backend
   - For Ready stories, validate referenced backend work is complete or available based on orchestration docs and linked backend issues
-- **Location**: moqui_example/.kiro/specs/agent-structure/task.md (Section: "Implement Parallel and Ready Stories"), moqui_example/runtime/component/moqui-agents/src/main/java/com/example/moquiagents/agents/implementation/FrontendAgent.java
+- **Location**: durion-moqui-frontend/.kiro/specs/agent-structure/task.md (Section: "Implement Parallel and Ready Stories"), durion-moqui-frontend/runtime/component/moqui-agents/src/main/java/com/example/moquiagents/agents/implementation/FrontendAgent.java
 - **Requirements**: Requirement 11 (AC1, AC3, AC4), REQ-001, REQ-008, REQ-009
 
 ### Task 9.5: Define Silo-Friendly Issue Coordination Patterns
@@ -669,7 +669,7 @@
 - [ ] When frontend work reveals missing backend contracts, require agents to:
   - Document expected endpoints, payloads, and error behavior in Notes for Agents
   - Tag workspace orchestration agents or relevant owners in the issue
-- **Location**: moqui_example/.kiro/specs/agent-structure/task.md (Section: "Coordination via Issues (Silo-Friendly)"), durion/.github/orchestration/frontend-coordination.md (referenced behavior)
+- **Location**: durion-moqui-frontend/.kiro/specs/agent-structure/task.md (Section: "Coordination via Issues (Silo-Friendly)"), durion/.github/orchestration/frontend-coordination.md (referenced behavior)
 - **Requirements**: Requirement 11 (AC5), Frontend Agent Orchestration Awareness
 
 ### Task 9.6: Keep Frontend Orchestration State in Sync
@@ -682,7 +682,7 @@
   - Ready and Parallel stories identified and grouped by domain
   - Blocked stories only included when explicit stub rules exist
   - Clarifications requested on issues before implementation starts
-- **Location**: moqui_example/.kiro/specs/agent-structure/task.md (Sections: "Keep Orchestration in Sync" and "Checklist for Each Sprint Planning Cycle"), durion/.github/orchestration/frontend-coordination.md
+- **Location**: durion-moqui-frontend/.kiro/specs/agent-structure/task.md (Sections: "Keep Orchestration in Sync" and "Checklist for Each Sprint Planning Cycle"), durion/.github/orchestration/frontend-coordination.md
 - **Requirements**: Requirement 11 (AC1, AC3, AC5)
 
 ---
@@ -716,9 +716,9 @@
 - **Graceful Degradation**: 80% functionality retained during failures
 - **Recovery**: 60 seconds for anomaly detection
 
-### Agent Implementation Locations (Relative to moqui_example)
+### Agent Implementation Locations (Relative to durion-moqui-frontend)
 ```
-moqui_example/runtime/component/moqui-agents/src/main/java/com/example/moquiagents/agents/
+durion-moqui-frontend/runtime/component/moqui-agents/src/main/java/com/example/moquiagents/agents/
 ├── foundation/
 │   ├── MoquiFrameworkAgent.java
 │   ├── ArchitectureAgent.java
@@ -741,7 +741,7 @@ moqui_example/runtime/component/moqui-agents/src/main/java/com/example/moquiagen
     ├── APIContractAgent.java
     └── UsabilityManager.java
 
-moqui_example/runtime/component/moqui-agents/src/test/java/com/example/moquiagents/
+durion-moqui-frontend/runtime/component/moqui-agents/src/test/java/com/example/moquiagents/
 ├── MoquiFrameworkAgentTest.java
 ├── DomainAgentTest.java
 ├── ExperienceLayerAgentTest.java
@@ -791,11 +791,11 @@ moqui_example/runtime/component/moqui-agents/src/test/java/com/example/moquiagen
    - Usability targets
 
 4. **Configuration & Registry**
-   - `moqui_example/.kiro/agents/registry.json` - Agent registry manifest
+   - `durion-moqui-frontend/.kiro/agents/registry.json` - Agent registry manifest
 
 ### Critical Requirements
-- All implementation code in `moqui_example/runtime/component/moqui-agents/src/main/java/`
-- All test code in `moqui_example/runtime/component/moqui-agents/src/test/java/`
+- All implementation code in `durion-moqui-frontend/runtime/component/moqui-agents/src/main/java/`
+- All test code in `durion-moqui-frontend/runtime/component/moqui-agents/src/test/java/`
 - Only registry.json and specifications in `.kiro/agents/`
 - Java 11 as target version for compatibility
 - Data architecture: local database only for state/cache, all business data from durion-positivity-backend services

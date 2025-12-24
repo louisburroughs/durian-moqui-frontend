@@ -6,7 +6,7 @@ set -e  # Exit on error
 
 # Configuration
 GITHUB_ORG="louisburroughs"
-PROJECT_ROOT="/home/n541342/IdeaProjects/moqui_example"
+PROJECT_ROOT="/home/n541342/IdeaProjects/durion-moqui-frontend"
 COMPONENT_BASE="$PROJECT_ROOT/runtime/component"
 MYADDONS_FILE="$PROJECT_ROOT/myaddons.xml"
 

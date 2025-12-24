@@ -715,7 +715,7 @@ All agent implementations, test classes, and generated artifacts are organized w
 ### Directory Structure
 
 ```
-moqui_example/
+durion-moqui-frontend/
 ├── .kiro/
 │   ├── generated/
 │   │   ├── agents/
