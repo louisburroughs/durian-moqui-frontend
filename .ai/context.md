@@ -71,7 +71,7 @@ Durion Frontend Platform (durion-moqui-frontend) is a modern web application bui
 ## Adjacent Projects
 
 - `durion-positivity-backend` — Java 21 Spring Boot microservices backend (separate repository); provides business logic and data persistence; integrates with Moqui via REST APIs
-- `durion/workspace-agents` — Java 17 Gradle project for agents/testing
+- `durion/workspace-agents` — Java 11 Gradle project for agents/testing
 
 ## Security & Compliance
 

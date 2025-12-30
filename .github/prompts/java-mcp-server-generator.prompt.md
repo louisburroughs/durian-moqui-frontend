@@ -683,15 +683,11 @@ A Model Context Protocol server built with Java and the official MCP Java SDK.
 
 ## Requirements
 
-- Java 17 or later
-- Maven 3.6+ or Gradle 7+
+- Java 11
+- Maven Gradle 7+
 
 ## Build
 
-### Maven
-```bash
-mvn clean package
-```
 
 ### Gradle
 ```bash
