@@ -4,9 +4,16 @@
 
 This runbook documents operational procedures for the **durion-moqui-frontend** project (Moqui Framework, Java 11, Groovy, Vue.js 3, Quasar, TypeScript). It focuses on building, running, deploying, and troubleshooting the Moqui-based frontend and its Vue/Quasar UI.
 
-This runbook is **frontend-local**. For cross-repository coordination (workspace-level agents, story orchestration, and incidents that span backend and frontend), use the workspace-level runbook in the **durion/workspace-agents** project.
+This runbook is **frontend-local**.
+
+For platform-wide procedures that span frontend and backend, use:
+
+- Platform-level: `durion/docs/OPERATIONS_RUNBOOK.md`
+
+For cross-repository incident coordination (workspace-level agents, story orchestration, and SRE procedures that span multiple repos), use the workspace-level runbook in the **durion/workspace-agents** project.
 
 **Related runbooks and specs:**
+- Platform-level: `durion/docs/OPERATIONS_RUNBOOK.md`
 - Workspace-level: `durion/workspace-agents/docs/OperationsRunbook.md`
 - Workspace agent structure: `durion/.kiro/specs/workspace-agent-structure/tasks.md`
 - Frontend agent structure plan: `.kiro/specs/agent-structure/tasks.md`
@@ -23,7 +30,7 @@ Use this runbook when you are operating or debugging **durion-moqui-frontend**:
 - For **monitoring & troubleshooting** common Moqui/frontend issues, see section 4.
 - For **agent-structure / Kiro automation** in this repo, see section 5.
 
-When an issue involves both Moqui/frontend and backend services, start here to ensure the frontend is healthy, then follow the backend and workspace-level runbooks.
+When an issue involves both Moqui/frontend and backend services, start here to ensure the frontend is healthy, then follow the platform runbook, and escalate to the workspace-level runbook for coordinated response.
 
 ---
 
@@ -188,7 +195,7 @@ Use this when you want an agent or automation to apply one more change to the ag
 
 ## 6. When to Escalate to Workspace-Level Runbook
 
-Use the workspace-level runbook in `durion/workspace-agents/docs/OperationsRunbook.md` when:
+Use the platform-level runbook in `durion/docs/OPERATIONS_RUNBOOK.md` and the workspace-level runbook in `durion/workspace-agents/docs/OperationsRunbook.md` when:
 
 - Issues clearly involve both frontend (Moqui/Vue) and backend services
 - Story orchestration outputs (story-sequence, frontend-/backend-coordination) and actual behaviour diverge
