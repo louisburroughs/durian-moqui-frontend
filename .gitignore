@@ -78,3 +78,6 @@ Desktop.ini
 #Kiro logs
 .kiro/run-logs/*
 .kiro/run-logs
+
+#temp processing document
+Durion-Processing.md
