@@ -1,4 +1,4 @@
-# Durion Frontend Platform
+# Durion Moqui Frontend
 
 **The Unified UI and Runtime Application for the Durion Platform.**
 
@@ -23,18 +23,67 @@ The **Durion Frontend Platform** (`durion-moqui-frontend`) is the user-facing la
 
 This project combines a robust Java runtime with a cutting-edge frontend stack:
 
-- **Runtime & Backend Core**:
-    - **Language**: Java 11
-    - **Framework**: Moqui Framework (Release 3.x)
-    - **Build Tool**: Gradle
-    - **Database**: PostgreSQL
+- **Runtime & Backend Core**: Java 11, Moqui Framework (Release 3.x), Gradle, PostgreSQL
+- **User Interface**: Vue.js 3 (Composition API), Quasar Framework, TypeScript 5, Pinia (if applicable) or standardized reactive stores, Node.js 18+, Vite (via Moqui build or standalone)
 
-- **User Interface**:
-    - **Framework**: Vue.js 3 (Composition API)
-    - **UI Library**: Quasar Framework
-    - **Language**: TypeScript 5
-    - **State Management**: Pinia (if applicable) or standardized reactive stores
-    - **Tooling**: Node.js 18+, Vite (via Moqui build or standalone)
+## Architecture
+
+The Moqui frontend is both a **web application** (Vue/Quasar UI served via Moqui webroot) and an **application runtime** (Moqui Framework + domain components). The `durion-positivity` component is the primary integration bridge between the Moqui runtime and the Durion POS microservices.
+
+### Conceptual Diagram
+
+```ascii
++---------------------------+
+|      User / Browser       |
+|    Vue 3 + Quasar SPA     |
++-------------+-------------+
+              |
+              | HTTP(S)
+              v
++---------------------------+
+|     Moqui Web Layer       |
+| - webroot / static assets |
+| - screens (UI routing)    |
+| - REST endpoints          |
++-------------+-------------+
+              |
+              v
++---------------------------+           +-----------------------------+
+|   Moqui Service Layer     |<--------->|    Moqui Entity Layer       |
+| - services / workflows    |           | - entities / queries        |
+| - rules / orchestration   |           | - transactions / caches     |
++-------------+-------------+           +-------------+---------------+
+              |                                       |
+              | (component-provided logic)            | SQL
+              v                                       v
++---------------------------+                 +------------------------+
+|   Domain Components       |                 |   Moqui Database       |
+| runtime/component/*       |                 | (typically PostgreSQL) |
+| - durion-* bounded ctx    |                 +------------------------+
+| - mantle-* shared domains |
++-------------+-------------+
+              |
+              | outbound integration (service calls)
+              v
++---------------------------+      HTTP(S) / JSON      +---------------------------+
+| durion-positivity         +-------------------------->+ Durion POS API Gateway    |
+| (bridge component)        |                           | (durion-positivity-backend|
++---------------------------+                           +-------------+-------------+
+                                                                  |
+                                                                  v
+                                                   +-------------------------------+
+                                                   |  pos-* microservices (Java)  |
+                                                   |  + their own DBs/events      |
+                                                   +-------------------------------+
+```
+
+### Layer Breakdown
+
+- **UI layer (Vue/Quasar)** renders the user experience and communicates with Moqui via webroot/screen navigation and REST calls.
+- **Moqui web layer** handles request routing, screen rendering, REST endpoints, auth/session handling, and static asset delivery.
+- **Moqui service layer** orchestrates business workflows (services) across domain components.
+- **Components (`runtime/component/`)** own domain-specific entities, services, screens, and UI assets (`durion-*`), plus shared ecosystem components (`mantle-*`, etc.).
+- **Bridge (`durion-positivity`)** is the integration boundary for calling the POS backend. This keeps direct microservice calls out of UI/screens and centralizes contracts, auth propagation, and error handling.
 
 ## Project Structure
 
@@ -59,40 +108,47 @@ durion-moqui-frontend/
 ```
 
 ### Key Components
+
 - **`runtime/component/durion-*`**: These are the heart of the application. Each folder represents a bounded context or functionality module.
 - **`framework`**: Contains the unbundled Moqui framework source. It is rarely modified directly.
 
 ## Quick Start
 
 ### Prerequisites
+
 - **Java**: JDK 11+
 - **Node.js**: Node 18+ (for UI asset compilation)
 - **Database**: PostgreSQL (or Docker)
 
 ### Build and Run
 
-1.  **Setup & Build**
+1. **Setup & Build**
     Install dependencies and build the runtime (skipping tests for speed).
+
     ```bash
     npm install
     ./gradlew build -x test
     ```
 
-2.  **Run Locally**
+2. **Run Locally**
     Start the application using the embedded web server (Jetty/Tomcat).
+
     ```bash
     java -jar runtime/build/libs/moqui.war
     ```
+
     Access the application at [http://localhost:8080](http://localhost:8080).
 
-3.  **Docker (Recommended for Dev)**
+3. **Docker (Recommended for Dev)**
     Spin up the full stack (Moqui + Postgres) using Docker Compose.
+
     ```bash
     docker-compose -f docker/moqui-postgres-compose.yml up -d
     ```
 
-4.  **UI Development (Hot Reload)**
+4. **UI Development (Hot Reload)**
     For frontend-focused work, run the dev server:
+
     ```bash
     npm run dev
     ```
@@ -102,9 +158,31 @@ durion-moqui-frontend/
 For AI agents and automated workflows, please refer to the specialized documentation in the workspace root.
 
 - **Developer Guidelines**: [Moqui Developer Agent](../durion/.github/agents/moqui-developer.agent.md)
-- **Frontend Guidelines**: [Vue agent](../durion/.github/agents/vue.agent.md) (if available) or standard Vue 3 docs.
+- **Frontend Guidelines**: [Vue agent](../durion/.github/agents/vue-agent.md) or standard Vue 3 docs.
 - **SRE & Observability**: [SRE Agent](../durion/.github/agents/sre.agent.md)
 - **General Workflows**: [Durion Platform Agents](../durion/AGENTS.md)
 
 ---
 *Part of the Durion Omni-Channel Retail Platform.*
+
+## Referrals
+
+The `runtime/component/durion-*` directories are maintained as separate repositories. Use the links below to jump to the owning repo and the primary domain context it serves.
+
+| Component | GitHub Repository | Domain Served |
+| --- | --- | --- |
+| `durion-accounting` | https://github.com/louisburroughs/durion-accounting | `domains/accounting` |
+| `durion-crm` | https://github.com/louisburroughs/durion-crm | `domains/crm` |
+| `durion-inventory` | https://github.com/louisburroughs/durion-inventory | `domains/inventory` |
+| `durion-shopmgr` | https://github.com/louisburroughs/durion-shopmgr | `domains/shopmgmt` |
+| `durion-workexec` | https://github.com/louisburroughs/durion-workexec | `domains/workexec` |
+| `durion-hr` | https://github.com/louisburroughs/durion-hr | `domains/people` |
+| `durion-sales` | https://github.com/louisburroughs/durion-sales | `domains/order`, `domains/billing`, `domains/pricing` |
+| `durion-product` | https://github.com/louisburroughs/durion-product | `domains/product` (catalog concepts), `domains/pricing` (MSRP inputs) |
+| `durion-positivity` | https://github.com/louisburroughs/durion-positivity | `domains/positivity` (backend integration boundary) |
+| `durion-experience` | https://github.com/louisburroughs/durion-experience | `domains/crm`, `domains/workexec`, `domains/billing` (customer portal surfaces) |
+| `durion-common` | https://github.com/louisburroughs/durion-common | Cross-cutting/shared (used by multiple domains) |
+| `durion-demo-data` | https://github.com/louisburroughs/durion-demo-data | Cross-cutting/shared (seed/demo data for multiple domains) |
+| `durion-chat` | https://github.com/louisburroughs/durion-chat | Cross-cutting (operator/developer assistant UI) |
+| `durion-theme` | https://github.com/louisburroughs/durion-theme | Cross-cutting (UI theme and design system assets) |
+

@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addons>
     <!-- Custom or overridden component definitions -->
+
+    <!-- Convenience set to fetch all custom Durion components in one go:
+         ./gradlew getComponentSet -PcomponentSet=durion-all -PlocationType=git
+    -->
+    <component-set name="durion-all" components="durion-theme,durion-workexec,durion-experience,durion-inventory,durion-crm,durion-demo-data,durion-product,durion-common,durion-accounting,durion-positivity,durion-hr,durion-shopmgr,durion-sales,durion-chat,moqui-agents"/>
     
     <!-- durion-theme component -->
     <component name="durion-theme" group="louisburroughs" version="1" branch="main"/>

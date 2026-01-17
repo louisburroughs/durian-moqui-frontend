@@ -21,17 +21,93 @@ apply plugin: 'war'
 apply plugin: 'com.github.ben-manes.versions'
 // uncomment to add the Error Prone compiler; not enabled by default (doesn't work on Travis CI)
 // apply plugin: 'net.ltgt.errorprone'
+
 buildscript {
+    // Some environments (offline/VPN/captive portals) make specific Maven repos unreachable.
+    // Gradle may fail the build on a repo transport error before trying later repos.
+    // To behave more like "try next repository", we preflight reachability and skip unreachable repos.
+    //
+    // Disable checks with: -Ddurion.skipRepoReachabilityChecks=true
+    def repoReachable = { String repoUrl ->
+        try {
+            if (Boolean.parseBoolean(System.getProperty('durion.skipRepoReachabilityChecks', 'false'))) return true
+            if (gradle?.startParameter?.offline) return false
+
+            def u = new URL(repoUrl)
+            def conn = u.openConnection()
+            if (conn instanceof java.net.HttpURLConnection) {
+                conn.instanceFollowRedirects = true
+                conn.connectTimeout = Integer.parseInt(System.getProperty('durion.repoConnectTimeoutMs', '1500'))
+                conn.readTimeout = Integer.parseInt(System.getProperty('durion.repoReadTimeoutMs', '1500'))
+                try { conn.requestMethod = 'HEAD' } catch (Exception ignored) { }
+                try { conn.connect() } catch (Exception e) { return false }
+                int code = 0
+                try { code = conn.responseCode } catch (Exception ignored) { return true }
+                return code > 0 && code < 500
+            }
+            conn.connectTimeout = Integer.parseInt(System.getProperty('durion.repoConnectTimeoutMs', '1500'))
+            conn.readTimeout = Integer.parseInt(System.getProperty('durion.repoReadTimeoutMs', '1500'))
+            conn.connect()
+            return true
+        } catch (Exception ignored) {
+            return false
+        }
+    }
+
     repositories {
         mavenLocal()
-        maven{ url "https://artifactory.michelin.com/maven-public" }
-        maven { url "https://repo1.maven.org/maven2" }
+        def michelinRepo = "https://artifactory.michelin.com/maven-public"
+        if (repoReachable.call(michelinRepo)) {
+            maven { url michelinRepo }
+        } else {
+            logger.lifecycle("[repo-skip] Unreachable: ${michelinRepo}")
+        }
+
+        def mavenCentralRepo = "https://repo1.maven.org/maven2"
+        if (repoReachable.call(mavenCentralRepo)) {
+            maven { url mavenCentralRepo }
+        } else {
+            logger.lifecycle("[repo-skip] Unreachable: ${mavenCentralRepo}")
+        }
         //mavenCentral()
-        // maven { url "https://plugins.gradle.org/m2/" }
+
+        def gradlePluginsRepo = "https://plugins.gradle.org/m2/"
+        if (repoReachable.call(gradlePluginsRepo)) {
+            maven { url gradlePluginsRepo }
+        } else {
+            logger.lifecycle("[repo-skip] Unreachable: ${gradlePluginsRepo}")
+        }
     }
     dependencies {
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.52.0'
         // uncomment to add the Error Prone compiler: classpath 'net.ltgt.gradle:gradle-errorprone-plugin:0.0.8'
+    }
+}
+
+// Helper for non-buildscript repositories (executed after buildscript classpath is configured).
+ext.repoReachable = { String repoUrl ->
+    try {
+        if (Boolean.parseBoolean(System.getProperty('durion.skipRepoReachabilityChecks', 'false'))) return true
+        if (gradle?.startParameter?.offline) return false
+
+        def u = new URL(repoUrl)
+        def conn = u.openConnection()
+        if (conn instanceof java.net.HttpURLConnection) {
+            conn.instanceFollowRedirects = true
+            conn.connectTimeout = Integer.parseInt(System.getProperty('durion.repoConnectTimeoutMs', '1500'))
+            conn.readTimeout = Integer.parseInt(System.getProperty('durion.repoReadTimeoutMs', '1500'))
+            try { conn.requestMethod = 'HEAD' } catch (Exception ignored) { }
+            try { conn.connect() } catch (Exception e) { return false }
+            int code = 0
+            try { code = conn.responseCode } catch (Exception ignored) { return true }
+            return code > 0 && code < 500
+        }
+        conn.connectTimeout = Integer.parseInt(System.getProperty('durion.repoConnectTimeoutMs', '1500'))
+        conn.readTimeout = Integer.parseInt(System.getProperty('durion.repoReadTimeoutMs', '1500'))
+        conn.connect()
+        return true
+    } catch (Exception ignored) {
+        return false
     }
 }
 dependencyUpdates.resolutionStrategy { componentSelection { rules -> rules.all { ComponentSelection selection ->
@@ -43,9 +119,19 @@ dependencyUpdates.resolutionStrategy { componentSelection { rules -> rules.all {
 repositories {
     flatDir name: 'localLib', dirs: projectDir.absolutePath + '/lib'
     mavenLocal()
-    maven{ url "https://artifactory.michelin.com/maven-public" }
+    def michelinRepo = "https://artifactory.michelin.com/maven-public"
+    if (project.ext.repoReachable.call(michelinRepo)) {
+        maven { url michelinRepo }
+    } else {
+        logger.lifecycle("[repo-skip] Unreachable: ${michelinRepo}")
+    }
     // Use AWS Mirror which may have better certificate setup
-    maven { url "https://repo1.maven.org/maven2" }
+    def mavenCentralRepo = "https://repo1.maven.org/maven2"
+    if (project.ext.repoReachable.call(mavenCentralRepo)) {
+        maven { url mavenCentralRepo }
+    } else {
+        logger.lifecycle("[repo-skip] Unreachable: ${mavenCentralRepo}")
+    }
     //mavenCentral()
 }
 
